@@ -7,9 +7,9 @@
 
 | Nombre | Carné | Usuario GitHub |
 | --- | --- | --- |
-| _(completar)_ | | |
-| _(completar)_ | | |
-| _(completar)_ | | |
+| Jose Pablo Guerrero Duarte |2022099311|TheKrigerenJp |
+| Yerik Chaves Serrano |2022437493 |Yerik1 |
+| Emmanuel Esquivel Chavarria |2022312336 |LelitoCh |
 
 ## Estructura
 

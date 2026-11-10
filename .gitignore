@@ -1,0 +1,19 @@
+.DS_Store
+Thumbs.db
+.env
+.env.local
+.idea/
+.vscode/
+*.log
+**/*.pyc
+**/__pycache__/
+tmp/
+.venv/
+venv/
+
+# PDF descargados por el notebook (se regeneran solos)
+labs/*/data/
+
+# Archivos temporales de Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/

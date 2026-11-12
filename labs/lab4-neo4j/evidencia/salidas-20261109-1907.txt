@@ -1,0 +1,253 @@
+
+##### [lab4-10] exec=1
+Neo4j: bolt://neo4j:7687
+Corpus: 58-2026, 59-2026, 60-2026, 61-2026 · páginas por acta: 2
+Los PDF se guardan en /src/labs/lab4-neo4j/data
+
+##### [lab4-12] exec=2
+OK: el índice tiene las cuatro actas del corpus (faltan: [])
+El índice publica 4234 documentos. El corpus usa 4.
+OK: 58-2026 es un PDF
+OK: 58-2026 tiene texto extraíble en sus primeras 2 páginas
+   58-2026: el PDF tiene 114 páginas; se cargan 4213 caracteres
+OK: 59-2026 es un PDF
+OK: 59-2026 tiene texto extraíble en sus primeras 2 páginas
+   59-2026: el PDF tiene 26 páginas; se cargan 3481 caracteres
+OK: 60-2026 es un PDF
+OK: 60-2026 tiene texto extraíble en sus primeras 2 páginas
+   60-2026: el PDF tiene 137 páginas; se cargan 3977 caracteres
+OK: 61-2026 es un PDF
+OK: 61-2026 tiene texto extraíble en sus primeras 2 páginas
+   61-2026: el PDF tiene 72 páginas; se cargan 4223 caracteres
+
+##### [lab4-14] exec=3
+58-2026: sesión Ordinaria, 2026-09-29, 18 participantes; cargos: Gilberth González González (Presidente), Teresita Venegas Murillo (Vicepresidenta)
+59-2026: sesión Extraordinaria, 2026-10-01, 18 participantes; cargos: Gilberth González González (Presidente), Teresita Venegas Murillo (Vicepresidenta)
+60-2026: sesión Ordinaria, 2026-10-06, 17 participantes; cargos: Gilberth González González (Presidente), Teresita Venegas Murillo (Vicepresidenta)
+61-2026: sesión Ordinaria, 2026-10-13, 18 participantes; cargos: Gilberth González González (Presidente), Teresita Venegas Murillo (Vicepresidenta)
+OK: las cuatro actas tienen tipo y fecha
+OK: cada acta tiene al menos 10 participantes
+
+LlamaIndex: 4 documentos → 15 fragmentos
+
+##### [lab4-16] exec=4
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]
+dimensión de cada vector: 384
+frase 1 y frase 2: 0.665
+frase 1 y frase 3: 0.202
+frase 2 y frase 3: 0.344
+
+##### [lab4-18] exec=5
+OK: hay un vector por fragmento
+OK: cada vector tiene 384 dimensiones
+   58-2026: 4 fragmentos
+   59-2026: 3 fragmentos
+   60-2026: 4 fragmentos
+   61-2026: 4 fragmentos
+
+##### [lab4-20] exec=6
+restricción: acta_id ['Acta'] ['id']
+restricción: fragmento_id ['Fragmento'] ['id']
+restricción: persona_nombre ['Persona'] ['nombre']
+índice vectorial: fragmento_embedding (384 dimensiones, coseno)
+
+##### [lab4-22] exec=7
+[{'id': '58-2026', 'tipo': 'Ordinaria', 'fecha': '2026-09-29'}, {'id': '59-2026', 'tipo': 'Extraordinaria', 'fecha': '2026-10-01'}, {'id': '60-2026', 'tipo': 'Ordinaria', 'fecha': '2026-10-06'}, {'id': '61-2026', 'tipo': 'Ordinaria', 'fecha': '2026-10-13'}]
+
+##### [lab4-24] exec=8
+
+##### [lab4-25] exec=9
+OK: cargar dos veces no duplica nada: (18, 71) → (18, 71)
+OK: (personas, relaciones) = (18, 71); se esperaba (18, 71)
+OK: el cargo vive en la relación: presidencia de 61-2026 = ['Gilberth González González']
+
+##### [lab4-27] exec=10
+
+##### [lab4-28] exec=11
+OK: cargar dos veces no duplica fragmentos ni relaciones
+OK: conteos {'fragmentos': 15, 'contiene': 15, 'sigue': 11}; se esperaba {'fragmentos': 15, 'contiene': 15, 'sigue': 11}
+OK: todos los fragmentos tienen su vector
+
+##### [lab4-30] exec=12
+
+##### [lab4-31] exec=13
+   {'acta': '58-2026', 'tipo': 'Ordinaria', 'fecha': '2026-09-29', 'fragmentos': 4}
+   {'acta': '59-2026', 'tipo': 'Extraordinaria', 'fecha': '2026-10-01', 'fragmentos': 3}
+   {'acta': '60-2026', 'tipo': 'Ordinaria', 'fecha': '2026-10-06', 'fragmentos': 4}
+   {'acta': '61-2026', 'tipo': 'Ordinaria', 'fecha': '2026-10-13', 'fragmentos': 4}
+OK: una fila por acta, con las columnas acta, tipo, fecha y fragmentos
+
+##### [lab4-33] exec=14
+
+##### [lab4-34] exec=15
+OK: el corpus tiene al menos un caso con resultados
+   Ana Betty Valenciano Moscoso + «pésame»: ['61-2026#1', '61-2026#2']
+OK: dos saltos correctos para Ana Betty Valenciano Moscoso y «pésame»
+   Zeneida Chaves Fernández + «aprobación»: ['58-2026#0', '58-2026#1', '60-2026#0', '60-2026#1', '61-2026#0', '61-2026#1']
+OK: dos saltos correctos para Zeneida Chaves Fernández y «aprobación»
+
+##### [lab4-37] exec=16
+
+##### [lab4-38] exec=17
+Solo vector:    [('60-2026', 0.819), ('58-2026', 0.814), ('61-2026', 0.81)]
+Vector + acta:  [('61-2026', 0.81), ('61-2026', 0.646), ('61-2026', 0.636)]
+OK: la consulta devuelve exactamente las nueve columnas pedidas
+OK: con $k = 3 se devuelven tres fragmentos
+OK: con el filtro, todos los fragmentos son del acta 61-2026
+OK: los fragmentos vienen ordenados por score, de mayor a menor
+OK: los participantes traen su cargo desde la relación
+OK: al menos un fragmento trae el texto que le SIGUE
+OK: sin un acta en la pregunta, la búsqueda recorre toda la base
+
+##### [lab4-41] exec=18
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+config.json:   0%|          | 0.00/645 [00:00<?, ?B/s]
+tokenizer_config.json:   0%|          | 0.00/526 [00:00<?, ?B/s]
+tokenizer.json: reconstructing file:   0%|          |  0.00B / 9.08MB            
+tokenizer.json: downloading bytes:           |  0.00B            
+special_tokens_map.json:   0%|          | 0.00/239 [00:00<?, ?B/s]
+modules.json:   0%|          | 0.00/229 [00:00<?, ?B/s]
+config_sentence_transformers.json:   0%|          | 0.00/122 [00:00<?, ?B/s]
+README.md:   0%|          | 0.00/3.89k [00:00<?, ?B/s]
+sentence_bert_config.json:   0%|          | 0.00/53.0 [00:00<?, ?B/s]
+model.safetensors: reconstructing file:   0%|          |  0.00B /  471MB            
+model.safetensors: downloading bytes:           |  0.00B            
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]
+config.json:   0%|          | 0.00/190 [00:00<?, ?B/s]
+Tokens del codificador: ['▁¿', 'Quién', '▁pre', 'side', '▁la', '▁sesión', '▁61', '-20', '26', '?']
+
+El codificador lee como máximo 128 tokens por texto.
+Los fragmentos tienen entre 91 y 375 tokens: 12 de 15 superan el límite.
+
+Los tres fragmentos más parecidos, calculados en Python con todos los vectores:
+   fragmento   coseno   (1 + coseno) / 2
+   60-2026#0   0.638    0.819
+   58-2026#0   0.627    0.814
+   61-2026#0   0.620    0.810
+
+##### [lab4-43] exec=19
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]
+Qwen/Qwen2.5-0.5B-Instruct: 494 millones de parámetros
+Tokens del generador: ['¿', 'Qui', 'én', ' pres', 'ide', ' la', ' sesión', ' ', '6', '1', '-', '2', '0', '2', '6', '?']
+
+Después de «El Concejo Municipal de Belén aprobó», los cinco tokens más probables son:
+   ' la'            0.289
+   ' el'            0.176
+   ' ay'            0.155
+   ' una'           0.094
+   ' un'            0.061
+
+Generación autorregresiva, eligiendo siempre el más probable:
+   paso 1: El Concejo Municipal de Belén aprobó la
+   paso 2: El Concejo Municipal de Belén aprobó la reform
+   paso 3: El Concejo Municipal de Belén aprobó la reforma
+   paso 4: El Concejo Municipal de Belén aprobó la reforma de
+   paso 5: El Concejo Municipal de Belén aprobó la reforma de la
+   paso 6: El Concejo Municipal de Belén aprobó la reforma de la Ley
+   paso 7: El Concejo Municipal de Belén aprobó la reforma de la Ley de
+   paso 8: El Concejo Municipal de Belén aprobó la reforma de la Ley de Seg
+
+##### [lab4-45] exec=20
+LangGraph compilado: inicio → recuperar → (redactar | vacío) → fin
+<IPython.core.display.Markdown object>
+
+##### [lab4-47] exec=21
+<|im_start|>system
+Usted responde preguntas sobre actas del Concejo Municipal de Belén. Responda en español, en una o dos oraciones, usando solamente los hechos y fragmentos dados. Cite el id del acta. Los hechos del grafo son datos verificados: si responden la pregunta, úselos primero. Si la información no aparece, diga que no aparece en el contexto.<|im_end|>
+<|im_start|>user
+Fragmentos:
+[61-2026#0] Acta Sesión Ordinaria 61-2026 
+ 
+13 de Octubre del 2026 
+ 
+Acta de la Sesión Ordinaria N° 61-2026 celebrada por el Concejo Municipal de Belén, a las 
+dieciocho horas del trece de octubre del dos mil veintiséis, en la Sala de Sesiones Guillermo 
+Villegas de la Municipalidad de Belén, en el Distrito San Antonio. PARTICIPANTES 
+PERMANENTES PRESENTES:  REGIDORES PROPIETARIOS:  Gilberth González González  
+– Presidente.   Teresita Venegas Murillo - Vicepresidenta.  María Lourdes Villalobos Morera.  
+Ulises Araya Chaves.  Ana Betty Valenciano Moscoso.  REGIDORES SUPLENTES:  Ana Yensy 
+Ramírez Arrieta.  José Pablo Delgado Morales.  Sigifredo Villegas Villalobos.  Marita Arguedas 
+Carvajal.  Francin
+---
+[61-2026#1] III) ASUNTOS DE TRÁMITE URGENTE A JUICIO DE LA PRESIDENCIA MUNICIPAL. 
+ 
+1. Convocatoria a Sesión Extraordinaria. 
+ 
+2. Se conoce el Oficio MB-081-2026 del Asesor Legal Luis Alvarez.   
+ 
+IV) INFORMES DE LA ALCALDÍA Y CONSULTAS A LA ALCALDÍA. 
+ 
+V) INFORME DE COMISIONES MUNICIPALES Y LOS CONCEJOS DE DISTRITOS. 
+ 
+VI) INFORMES DE LOS ASESORES DEL CONCEJO MUNICIPAL.  
+ 
+VII) MOCIONES E INICIATIVAS. 
+ 
+VIII) LECTURA, EXAMEN Y TRAMITACIÓN DE LA CORRESPONDENCIA. 
+ 
+CAPÍTULO II 
+ 
+REVISIÓN Y APROBACIÓN DE ACTAS 
+  
+ 
+ARTÍCULO 1.  El Presidente Municipal somete a aprobación el Acta de la Sesión Ordinaria 
+N°60-2026, celebrada el 06 de Octubre del año dos mil veintiséis. 
+  
+SE ACUERDA CON CUATRO VO
+---
+[61-2026#3] SE ACUERDA POR UNANIMIDAD:  PRIMERO:   Modificar Orden del Dia.  SEGUNDO:  El 
+Concejo Municipal lamenta profundamente el fallecimiento de:   
+ 
+ELIAS NUÑEZ OVIEDO 
+ 
+Nos unimos al dolor que embarga a su estimable familia y a sus seres queridos, así mismo 
+hacemos llegar nuestro sentimiento de solidaridad. Que el Señor Dios Todopoderoso, les 
+otorgue fortaleza y paz en estos momentos difíciles.
+
+Hechos del grafo:
+- Acta 61-2026: sesión Ordinaria del 2026-10-13. Vicepresidenta: Teresita Venegas Murillo; Presidente: Gilberth González González
+
+Pregunta: Según el acta 61-2026, ¿quién preside la sesión?<|im_end|>
+<|im_start|>assistant
+
+
+Total: 863 tokens, de los 32 768 que admite la ventana de contexto.
+
+##### [lab4-49] exec=22
+
+Pregunta: Según el acta 61-2026, ¿quién preside la sesión?
+   contexto 61-2026#0  score=0.816
+   contexto 61-2026#1  score=0.695
+   contexto 61-2026#3  score=0.653
+Respuesta: Gilberth González González es preside la sesión Ordinaria del Concejo Municipal de Belén, según la acta 61-2026.
+
+Pregunta: En el acta 61-2026, ¿qué acta anterior se somete a aprobación?
+   contexto 61-2026#0  score=0.770
+   contexto 61-2026#1  score=0.697
+   contexto 61-2026#3  score=0.675
+Respuesta: El acta 61-2026 se somete a aprobación al acta 61-2026.
+
+Pregunta: ¿En qué sesión se acordó enviar una nota de pésame?
+   contexto 60-2026#3  score=0.750
+   contexto 58-2026#0  score=0.705
+   contexto 61-2026#0  score=0.698
+Respuesta: La nota de pésame fue enviada en la sesión ordinaria del 2026-10-13, cuando se celebraba la sesión extraordinaria.
+
+=== Verificación final ===
+OK: «Según el acta 61-2026, ¿quién preside la…» recuperó contexto
+OK: la respuesta no cita actas ajenas al contexto (['61-2026'])
+OK: «En el acta 61-2026, ¿qué acta anterior s…» recuperó contexto
+OK: la respuesta no cita actas ajenas al contexto (['61-2026'])
+OK: «¿En qué sesión se acordó enviar una nota…» recuperó contexto
+OK: la respuesta no cita actas ajenas al contexto (ninguna)
+OBSERVACIÓN: la primera respuesta sí nombra a quien el grafo registra como Presidente.
+
+   TODO 1: OK
+   TODO 2: OK
+   TODO 3: OK
+   TODO 4: OK
+   TODO 5: OK
+
+OK: el laboratorio está completo. Pase a las preguntas del informe.
+
+##### [735a3747-1d89-4d64-a7e8-7c70cbd0b423] exec=None
